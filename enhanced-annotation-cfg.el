@@ -10,7 +10,7 @@
 	       :annotation-symbol "//"
 	       :begin-block-symbol "/*"
 	       :end-block-symbol "*/")
-	(:name "xml-mode"
+	(:name "nxml-mode"
 	       :support-block-annotation t
 	       :begin-block-symbol "<!--"
 	       :end-block-symbol "-->")
