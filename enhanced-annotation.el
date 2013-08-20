@@ -27,8 +27,10 @@
       (progn
 	(if (get-suport-block-annotation mode-cfg)
 	    (progn
+	      (goto-char start-pos)
 	      (goto-char (line-beginning-position))
 	      (insert-string (get-begin-block-symbol mode-cfg))
+	      (goto-char end-pos)
 	      (goto-char (line-end-position))
 	      (insert-string (get-end-block-symbol mode-cfg)))
 	  (progn
