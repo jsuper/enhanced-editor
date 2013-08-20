@@ -20,34 +20,35 @@
 
 
 (defun annotate-region (start-pos end-pos line-count)
-  (with-current-buffer
-      (let ((mode-cfg (query-cfg-by-mode-name (format "%s" major-mode))))
-	(message "Will annotate %d lines" line-count)
-	(if (equal 1 line-count)
-	    (annotate-current-line mode-cfg)
+  (let ((mode-cfg (query-cfg-by-mode-name (format "%s" major-mode))))
+    (message "Will annotate %d lines" line-count)
+    (if (equal 1 line-count)
+	(annotate-current-line mode-cfg)
+      (progn
+	(if (get-suport-block-annotation mode-cfg)
+	    (progn
+	      (goto-char (line-beginning-position))
+	      (insert-string (get-begin-block-symbol mode-cfg))
+	      (goto-char (line-end-position))
+	      (insert-string (get-end-block-symbol mode-cfg)))
 	  (progn
-	    (if (get-suport-block-annotation mode-cfg)
-		(progn
-		  (goto-char (line-beginning-position))
-		  (insert-string (get-begin-block-symbol mode-cfg))
-		  (goto-char (line-end-position))
-		  (insert-string (get-end-block-symbol mode-cfg)))
-	      (progn
-		(setq current-line-pos start-pos)
-		(dotimes (i line-count)
-		  (goto-char current-line-pos)
-		  (goto-char (line-beginning-position))
-		  (annotate-current-line mode-cfg)
-		  (setq current-line-pos (+ 1 (line-end-position))))))
-	    ))
-	)
-    (message "Done!")))
+	    (setq current-line-pos start-pos)
+	    (dotimes (i line-count)
+	      (goto-char current-line-pos)
+	      (goto-char (line-beginning-position))
+	      (annotate-current-line mode-cfg)
+	      (setq current-line-pos (+ 1 (line-end-position))))))
+	))
+    ))
 
 (defun annotate-selection ()
   (interactive)
   (let ((line-count (count-lines (region-beginning) (region-end))))
     (if (<= line-count 1)
-	(annotate-region (line-beginning-position) (line-end-position) 1)
+	(progn
+	  (goto-char (region-beginning))
+	  (goto-char (line-beginning-position))
+	  (annotate-region (line-beginning-position) (line-end-position) 1))
       (annotate-region (region-beginning) (region-end) line-count))))
 
 (global-set-key (kbd "M-p") 'annotate-selection)
