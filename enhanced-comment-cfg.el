@@ -1,17 +1,17 @@
 ;; Enhanced Annotation Configuration Data
 
-(setq mode-annotation-cfg
+(setq mode-comment-cfg
       '(
 	(:name "emacs-lisp-mode"
-	       :support-block-annotation nil
-	       :annotation-symbol ";")
+	       :support-block-comment nil
+	       :comment-symbol ";")
 	(:name "java-mode"
-	       :support-block-annotation t
-	       :annotation-symbol "//"
+	       :support-block-comment t
+	       :comment-symbol "//"
 	       :begin-block-symbol "/*"
 	       :end-block-symbol "*/")
 	(:name "nxml-mode"
-	       :support-block-annotation t
+	       :support-block-comment t
 	       :begin-block-symbol "<!--"
 	       :end-block-symbol "-->")
 	))
@@ -21,16 +21,16 @@
       (equal (getf mode-cfg :name) mode-name)))
 
 (defun --query-mode-cfg (selector-fn)
-  (remove-if-not selector-fn mode-annotation-cfg))
+  (remove-if-not selector-fn mode-comment-cfg))
 
 (defun query-cfg-by-mode-name (mode-name)
   (first (--query-mode-cfg (--mode-name-selector mode-name))))
 
-(defun get-annotation-symbol (mode-cfg)
-  (getf mode-cfg :annotation-symbol))
+(defun get-comment-symbol (mode-cfg)
+  (getf mode-cfg :comment-symbol))
 
-(defun get-suport-block-annotation (mode-cfg)
-  (getf mode-cfg :support-block-annotation))
+(defun get-support-block-comment (mode-cfg)
+  (getf mode-cfg :support-block-comment))
 
 (defun get-begin-block-symbol (mode-cfg)
   (getf mode-cfg :begin-block-symbol))
@@ -38,5 +38,5 @@
 (defun get-end-block-symbol (mode-cfg)
   (getf mode-cfg :end-block-symbol))
 
-(provide 'mode-annotation-cfg)
+(provide 'mode-comment-cfg)
 

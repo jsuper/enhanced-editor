@@ -1,16 +1,16 @@
 ;;Enhanced Annotation for Emacs User
 
-(require 'mode-annotation-cfg)
+(require 'mode-comment-cfg)
 
-(defun annotate-current-line (mode-cfg)
-  (let ((annotation-symbol (get-annotation-symbol mode-cfg))
-	(support-block-annotation (get-suport-block-annotation mode-cfg)))
-    (if annotation-symbol
+(defun comment-current-line (mode-cfg)
+  (let ((comment-symbol (get-comment-symbol mode-cfg))
+	(support-block-comment (get-support-block-comment mode-cfg)))
+    (if comment-symbol
 	(progn
 	  (goto-char (line-beginning-position))
-	  (insert-string annotation-symbol))
+	  (insert-string comment-symbol))
       (progn
-	(if support-block-annotation
+	(if support-block-comment
 	    (progn
 	      (goto-char (line-beginning-position))
 	      (insert-string (get-begin-block-symbol mode-cfg))
@@ -19,13 +19,13 @@
 	(message "Cannot find avaiable annotation configuration")))))
 
 
-(defun annotate-region (start-pos end-pos line-count)
+(defun comment-region (start-pos end-pos line-count)
   (let ((mode-cfg (query-cfg-by-mode-name (format "%s" major-mode))))
     (message "Will annotate %d lines" line-count)
     (if (equal 1 line-count)
-	(annotate-current-line mode-cfg)
+	(comment-current-line mode-cfg)
       (progn
-	(if (get-suport-block-annotation mode-cfg)
+	(if (get-support-block-comment mode-cfg)
 	    (progn
 	      (goto-char start-pos)
 	      (goto-char (line-beginning-position))
@@ -38,19 +38,20 @@
 	    (dotimes (i line-count)
 	      (goto-char current-line-pos)
 	      (goto-char (line-beginning-position))
-	      (annotate-current-line mode-cfg)
-	      (setq current-line-pos (+ 1 (line-end-position))))))
+	      (comment-current-line mode-cfg)
+	      (setq current-line-pos (+ 1 (line-end-position))))
+	    ))
 	))
     ))
 
-(defun annotate-selection ()
+(defun comment-selection ()
   (interactive)
   (let ((line-count (count-lines (region-beginning) (region-end))))
     (if (<= line-count 1)
 	(progn
 	  (goto-char (region-beginning))
 	  (goto-char (line-beginning-position))
-	  (annotate-region (line-beginning-position) (line-end-position) 1))
-      (annotate-region (region-beginning) (region-end) line-count))))
+	  (comment-region (line-beginning-position) (line-end-position) 1))
+      (comment-region (region-beginning) (region-end) line-count))))
 
-(global-set-key (kbd "M-p") 'annotate-selection)
+(global-set-key (kbd "M-p") 'comment-selection)
