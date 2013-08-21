@@ -16,12 +16,12 @@
 	      (insert-string (get-begin-block-symbol mode-cfg))
 	      (goto-char (line-end-position))
 	      (insert-string (get-end-block-symbol mode-cfg))))
-	(message "Cannot find avaiable annotation configuration")))))
+	(message "Cannot find avaiable comment configuration")))))
 
 
 (defun comment-region (start-pos end-pos line-count)
   (let ((mode-cfg (query-cfg-by-mode-name (format "%s" major-mode))))
-    (message "Will annotate %d lines" line-count)
+    (message "Will comment %d lines" line-count)
     (if (equal 1 line-count)
 	(comment-current-line mode-cfg)
       (progn
@@ -53,5 +53,19 @@
 	  (goto-char (line-beginning-position))
 	  (comment-region (line-beginning-position) (line-end-position) 1))
       (comment-region (region-beginning) (region-end) line-count))))
+
+(defun uncomment-current-line (comment-cfg)
+  (let ((comment-symbol (get-comment-symbol comment-cfg))
+	(support-block-comment (get-support-block-comment comment-cfg)))
+    (if comment-symbol
+	(replace-string comment-symbol "" 
+			(line-beginning-position) 
+			(+ (line-beginning-position) (length comment-symbol)))
+	)
+    )
+  )
+
+(defun uncomment-selection ()
+  )
 
 (global-set-key (kbd "M-p") 'comment-selection)
