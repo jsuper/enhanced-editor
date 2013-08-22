@@ -5,6 +5,10 @@
 	(:name "emacs-lisp-mode"
 	       :support-block-comment nil
 	       :comment-symbol ";")
+	(:name "lisp-interaction-mode"
+	       :support-block-comment nil
+	       :comment-symbol ";"
+	       )
 	(:name "java-mode"
 	       :support-block-comment t
 	       :comment-symbol "//"
