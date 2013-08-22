@@ -58,11 +58,21 @@
   (let ((comment-symbol (get-comment-symbol comment-cfg))
 	(support-block-comment (get-support-block-comment comment-cfg)))
     (if comment-symbol
-	(replace-string comment-symbol "" 
+	(replace-string comment-symbol ""		    
 			(line-beginning-position) 
 			(+ (line-beginning-position) (length comment-symbol)))
-	)
-    )
+      (if support-block-comment
+	  (let ((begin-symbol (get-begin-block-symbol comment-cfg))
+		(end-symbol (get-end-block-symbol comment-cfg)))
+	    (replace-string begin-symbol "" 
+			    (line-beginning-position)
+			    (+ (line-beginning-position) (length begin-symbol)))
+	    (replace-string end-symbol ""
+			    (- (line-end-position) (length end-symbol))
+			    (line-end-position))
+	    )
+	(message "not found avaiable commentary configuration for current major mode"))
+	))
   )
 
 (defun uncomment-selection ()
