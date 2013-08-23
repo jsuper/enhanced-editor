@@ -46,13 +46,15 @@
 
 (defun comment-selection ()
   (interactive)
-  (let ((line-count (count-lines (region-beginning) (region-end))))
-    (if (<= line-count 1)
-	(progn
-	  (goto-char (region-beginning))
-	  (goto-char (line-beginning-position))
-	  (comment-region (line-beginning-position) (line-end-position) 1))
-      (comment-region (region-beginning) (region-end) line-count))))
+  (if (region-active-p)
+      (let ((line-count (count-lines (region-beginning) (region-end))))
+	(if (<= line-count 1)
+	    (progn
+	      (goto-char (region-beginning))
+	      (goto-char (line-beginning-position))
+	      (comment-region (line-beginning-position) (line-end-position) 1))
+	  (comment-region (region-beginning) (region-end) line-count)))
+    (comment-region (line-beginning-position) (line-end-position) 1)))
 
 (defun uncomment-current-line (comment-cfg)
   (let ((comment-symbol (get-comment-symbol comment-cfg))
