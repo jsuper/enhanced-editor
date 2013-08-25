@@ -103,25 +103,29 @@
 			      (line-end-position))
 	      )
 	  (progn
-	    (setq current-line-pos start-pos)
+	    (goto-char start-pos)
+	    (setq symbol-len (length comment-symbol))
 	    (dotimes (i line-count)
-	      (let ((comment-symbol (get-comment-symbol)))
-		(setq symbol-len (length comment-symbol))
-		(goto-char current-line-pos)
-		(replace-string comment-symbol ""
-				(line-beginning-position)
-				(+ (line-beginning-position) symbol-len))
-		(goto-line (next-line))
-		(setq current-line-pos (line-beginning-position)))))
+	      (goto-char (line-beginning-position))
+	      (replace-string comment-symbol ""
+			      nil
+			      (line-beginning-position)
+			      (+ (line-beginning-position) symbol-len))
+	      (goto-char (+ 1 (line-end-position)))))
 	  )))))
 
 (defun uncomment-selection ()
   (interactive)
-  (let ((line-count (count-lines (region-beginning) (region-end))))
-    (goto-char (region-beginning))
-    (if (<= line-count 1)
-	(uncomment-region (line-beginning-position) (region-end) 1)
-      (uncomment-region (line-beginning-position) (region-end) line-count))))
+  (if (region-active-p)
+      (let ((line-count (count-lines (region-beginning) (region-end))))
+	(goto-char (region-beginning))
+	(if (<= line-count 1)
+	    (progn
+	      (goto-char (region-beginning))
+	      (uncomment-region (line-beginning-position) (region-end) 1))
+	  (uncomment-region (line-beginning-position) (region-end) line-count)))
+    (uncomment-region (line-beginning-position) (line-end-position) 1)
+    ))
 
 (global-set-key (kbd "M-p") 'comment-selection)
 (global-set-key (kbd "M-[") 'uncomment-selection)
