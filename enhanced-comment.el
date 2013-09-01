@@ -24,7 +24,6 @@
 (defun comment-region (start-pos end-pos line-count)
   "comment selection region, this will include the line which current cursor in"
   (let ((mode-cfg (query-cfg-by-mode-name (format "%s" major-mode))))
-    (message "Will comment %d lines" line-count)
     (if (equal 1 line-count)
 	(comment-current-line mode-cfg)
       (progn
@@ -124,5 +123,4 @@
     (uncomment-region (line-beginning-position) (line-end-position) 1)
     ))
 
-(global-set-key (kbd "M-p") 'comment-selection)
-(global-set-key (kbd "M-[") 'uncomment-selection)
+(provide 'enhanced-comment)
