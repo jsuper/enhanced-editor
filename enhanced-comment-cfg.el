@@ -42,5 +42,4 @@
 (defun get-end-block-symbol (mode-cfg)
   (getf mode-cfg :end-block-symbol))
 
-(provide 'mode-comment-cfg)
-
+(provide 'enhanced-comment-cfg)

@@ -1,6 +1,6 @@
 ;;Enhanced Annotation for Emacs User
 
-(require 'mode-comment-cfg)
+(require 'enhanced-comment-cfg)
 (require 'enhanced-common-function)
 
 (defun comment-current-line (mode-cfg)
