@@ -1,4 +1,5 @@
 ;; Enhanced Annotation Configuration Data
+(require 'cl)
 
 (setq mode-comment-cfg
       '(
